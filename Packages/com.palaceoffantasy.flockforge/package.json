@@ -1,0 +1,34 @@
+{
+  "name": "com.palaceoffantasy.flockforge",
+  "version": "0.1.0",
+  "displayName": "FlockForge",
+  "description": "A modular, designer-friendly boid system for Unity with cross-engine architecture. Create flocking behaviors, state machines, and formations with ease.",
+  "unity": "2021.3",
+  "unityRelease": "0f1",
+  "documentationUrl": "https://github.com/palaceoffantasy/flockforge",
+  "changelogUrl": "https://github.com/palaceoffantasy/flockforge/blob/main/CHANGELOG.md",
+  "licensesUrl": "https://github.com/palaceoffantasy/flockforge/blob/main/LICENSE.md",
+  "keywords": [
+    "boids",
+    "flocking",
+    "ai",
+    "steering",
+    "behavior",
+    "agents",
+    "swarm",
+    "formation"
+  ],
+  "author": {
+    "name": "Palace of Fantasy",
+    "email": "contact@palaceoffantasy.com",
+    "url": "https://palaceoffantasy.com"
+  },
+  "type": "library",
+  "samples": [
+    {
+      "displayName": "L'Épervier Demo",
+      "description": "A prey/predator demo showcasing FlockForge features: state machine, behaviors, and events.",
+      "path": "Samples~/Epervier"
+    }
+  ]
+}
