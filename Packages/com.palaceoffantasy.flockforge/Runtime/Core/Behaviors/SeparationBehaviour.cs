@@ -1,8 +1,4 @@
-using UnityEngine;
-using PalaceOfFantasy.FlockForge.Core;
-using PalaceOfFantasy.FlockForge.Unity.Config;
-
-namespace PalaceOfFantasy.FlockForge.Samples.Epervier
+namespace PalaceOfFantasy.FlockForge.Core.Behaviors
 {
     public class SeparationBehaviour : IBehaviour
     {
@@ -25,17 +21,8 @@ namespace PalaceOfFantasy.FlockForge.Samples.Epervier
                     force += diff.Normalized / dist;
                 }
             }
-            return force.Normalized * context.Settings.MaxSpeed;
+            var desired = force.Normalized * context.Settings.MaxSpeed;
+            return desired - context.Self.Velocity;
         }
-    }
-
-    [CreateAssetMenu(menuName = "FlockForge/Behaviors/Separation")]
-    public class SeparationAsset : BehaviourAsset
-    {
-        public float weight = 1.5f;
-        public float radius = 2f;
-
-        public override IBehaviour CreateBehaviour()
-            => new SeparationBehaviour { Weight = weight, Radius = radius, IsEnabled = _isEnabled };
     }
 }

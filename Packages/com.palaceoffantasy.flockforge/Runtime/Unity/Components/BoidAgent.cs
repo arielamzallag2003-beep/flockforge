@@ -60,6 +60,17 @@ namespace PalaceOfFantasy.FlockForge.Unity.Components
             var maxSpeed = Settings.MaxSpeed;
             var mass = Settings.Mass;
             var drag = Settings.Drag;
+            
+            // Constrain force based on MovementPlane
+            switch (Settings.MovementPlane)
+            {
+                case MovementPlane.XY:
+                    _accumulatedForce = new FVector3(_accumulatedForce.X, _accumulatedForce.Y, 0);
+                    break;
+                case MovementPlane.XZ:
+                    _accumulatedForce = new FVector3(_accumulatedForce.X, 0, _accumulatedForce.Z);
+                    break;
+            }
 
             // Apply accumulated force (integration)
             var acceleration = _accumulatedForce / mass;
@@ -70,6 +81,17 @@ namespace PalaceOfFantasy.FlockForge.Unity.Components
 
             // Clamp velocity
             _velocity = FVector3.ClampMagnitude(_velocity, maxSpeed);
+
+            // Constrain velocity based on MovementPlane
+            switch (Settings.MovementPlane)
+            {
+                case MovementPlane.XY:
+                    _velocity = new FVector3(_velocity.X, _velocity.Y, 0);
+                    break;
+                case MovementPlane.XZ:
+                    _velocity = new FVector3(_velocity.X, 0, _velocity.Z);
+                    break;
+            }
 
             // Update position
             transform.position += _velocity.ToUnityVector3() * deltaTime;
