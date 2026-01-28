@@ -1,7 +1,7 @@
 {
     "name": "PalaceOfFantasy.FlockForge",
     "rootNamespace": "PalaceOfFantasy.FlockForge",
-    "references": [],
+    "references": ["Unity.InputSystem"],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

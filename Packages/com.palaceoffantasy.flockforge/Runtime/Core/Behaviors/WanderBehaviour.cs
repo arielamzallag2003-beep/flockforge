@@ -7,6 +7,7 @@ namespace PalaceOfFantasy.FlockForge.Core.Behaviors
         public string Name => "Wander";
         public bool IsEnabled { get; set; } = true;
         public float Weight { get; set; } = 1f;
+        public int Priority => 0;
 
         public float Jitter { get; set; } = 5f;
         public float Radius { get; set; } = 2f;

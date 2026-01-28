@@ -14,6 +14,7 @@ namespace PalaceOfFantasy.FlockForge.Core
         float TotalTime { get; }
 
         FVector3? SeekTarget { get; }
+        IBoid SeekTargetBoid { get; }
         IReadOnlyList<FVector3> Threats { get; }
 
         bool IsInFormation { get; }

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace PalaceOfFantasy.FlockForge.Core
 {
     public interface IBoid
@@ -12,9 +14,18 @@ namespace PalaceOfFantasy.FlockForge.Core
 
         IFlock Flock { get; set; }
         IBoidSettings Settings { get; }
+        
+        /// <summary>
+        /// Optional per-boid target provider. If set, takes priority over flock-level provider.
+        /// </summary>
+        ITargetProvider TargetProvider { get; }
+        
+        IReadOnlyList<IBehaviour> RuntimeBehaviours { get; }
 
         void AddForce(FVector3 force);
         void ApplyForces(float deltaTime);
+        void AddRuntimeBehaviour(IBehaviour behaviour);
+        void RemoveRuntimeBehaviour(IBehaviour behaviour);
         FVector3 AccumulatedForce { get; }
     }
 }

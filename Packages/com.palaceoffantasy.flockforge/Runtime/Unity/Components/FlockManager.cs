@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using PalaceOfFantasy.FlockForge.Core;
 using PalaceOfFantasy.FlockForge.Unity.Config;
 using PalaceOfFantasy.FlockForge.Unity.Extensions;
+using PalaceOfFantasy.FlockForge.Runtime.Behaviors;
 
 namespace PalaceOfFantasy.FlockForge.Unity.Components
 {
@@ -118,6 +119,54 @@ namespace PalaceOfFantasy.FlockForge.Unity.Components
             if (_useFixedTimestep)
             {
                 _flock.Step(Time.fixedDeltaTime); // Or use _fixedTimestep accumulator
+            }
+        }
+
+        /// <summary>
+        /// Register an external boid with this FlockManager.
+        /// Use this for dynamically spawned boids.
+        /// </summary>
+        public void RegisterBoid(BoidAgent agent)
+        {
+            if (agent != null && _flock != null)
+            {
+                _flock.Register(agent);
+                LinkFormationController(agent);
+            }
+        }
+
+        private void LinkFormationController(IBoid boid)
+        {
+            var controller = GetComponent<IFormationController>();
+            if (controller == null) return;
+
+            // Link to boid's runtime behaviors
+            foreach (var b in boid.RuntimeBehaviours)
+            {
+                if (b is FormationBehaviour fb && fb.Controller == null)
+                {
+                    fb.Controller = controller;
+                }
+            }
+
+            // Link to flock default behaviors
+            foreach (var b in _flock.Settings.DefaultBehaviours)
+            {
+                if (b is FormationBehaviour fb && fb.Controller == null)
+                {
+                    fb.Controller = controller;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Unregister a boid from this FlockManager.
+        /// </summary>
+        public void UnregisterBoid(BoidAgent agent)
+        {
+            if (agent != null && _flock != null)
+            {
+                _flock.Unregister(agent);
             }
         }
     }

@@ -7,3 +7,4 @@ namespace PalaceOfFantasy.FlockForge.Core
         bool IsActive { get; }
     }
 }
+ 

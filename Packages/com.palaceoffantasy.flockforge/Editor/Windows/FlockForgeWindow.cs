@@ -6,7 +6,7 @@ namespace PalaceOfFantasy.FlockForge.Editor.Windows
 {
     public class FlockForgeWindow : EditorWindow
     {
-        private enum Tab { Behavior, Transition, State, StateMachine, Profile, Event }
+        private enum Tab { Behavior, Transition, State, StateMachine, Profile, Event, Formation }
         private Tab _currentTab = Tab.Behavior;
 
         // Common
@@ -31,7 +31,7 @@ namespace PalaceOfFantasy.FlockForge.Editor.Windows
             EditorGUI.BeginChangeCheck();
             
             _currentTab = (Tab)GUILayout.Toolbar((int)_currentTab, new string[] { 
-                "Behavior", "Transition", "State", "StateMachine", "Profile", "Event" 
+                "Behavior", "Transition", "State", "StateMachine", "Profile", "Event", "Formation" 
             });
             EditorGUILayout.Space(10);
 
@@ -116,6 +116,7 @@ namespace PalaceOfFantasy.FlockForge.Editor.Windows
                 Tab.StateMachine => "Creates a state machine behavior. Can be used as a behavior itself, containing multiple states.",
                 Tab.Profile => "Creates a custom BoidProfile subclass. Add your own settings fields for specialized boid types.",
                 Tab.Event => "Creates a custom flock event struct. Use with IEventManager for boid-to-boid or boid-to-world communication.",
+                Tab.Formation => "Creates a custom formation type. Implement GetSlotOffset() to define where units should stand.",
                 _ => ""
             };
             EditorGUILayout.HelpBox(helpText, MessageType.Info);
@@ -139,6 +140,7 @@ namespace PalaceOfFantasy.FlockForge.Editor.Windows
                 Tab.StateMachine => GetStateMachineCode(),
                 Tab.Profile => GetProfileCode(),
                 Tab.Event => GetEventCode(),
+                Tab.Formation => GetFormationCode(),
                 _ => ""
             };
         }
@@ -170,6 +172,9 @@ namespace PalaceOfFantasy.FlockForge.Editor.Windows
                     break;
                 case Tab.Event:
                     GenerateEvent();
+                    break;
+                case Tab.Formation:
+                    GenerateFormation();
                     break;
             }
 
@@ -371,6 +376,38 @@ namespace {_namespace}
 }}";
         }
 
+        private string GetFormationCode()
+        {
+            string className = _itemName + "Formation";
+            return $@"using PalaceOfFantasy.FlockForge.Core;
+using UnityEngine;
+
+namespace {_namespace}
+{{
+    public class {className} : IFormation
+    {{
+        public string Name => ""{_itemName}"";
+        public int MaxSlots => 100;
+
+        public FVector3 GetSlotOffset(int slotIndex, int totalUnits, float spacing)
+        {{
+            // TODO: Calculate the local offset for this slot
+            // slotIndex: 0 to totalUnits-1
+            // Return FVector3 local to the leader
+            
+            return FVector3.Zero;
+        }}
+
+        public FVector3 GetWorldPosition(FVector3 localOffset, FVector3 leaderPosition, FVector3 leaderForward)
+        {{
+            // Convert local offset to world position
+            Quaternion rotation = Quaternion.LookRotation(leaderForward.ToUnityVector3());
+            return leaderPosition + (rotation * localOffset.ToUnityVector3()).ToFVector3();
+        }}
+    }}
+}}";
+        }
+
         #endregion
 
         #region File Writers
@@ -465,6 +502,14 @@ namespace {_namespace}
             string code = GetEventCode();
             WriteFile(eventName, code);
             Debug.Log($"Generated Event: {eventName}");
+        }
+
+        private void GenerateFormation()
+        {
+            string className = _itemName + "Formation";
+            string code = GetFormationCode();
+            WriteFile(className, code);
+            Debug.Log($"Generated Formation: {className}");
         }
 
         private void WriteFile(string fileName, string content)

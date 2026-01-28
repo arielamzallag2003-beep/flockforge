@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 using PalaceOfFantasy.FlockForge.Core;
 using PalaceOfFantasy.FlockForge.Unity.Config;
 using PalaceOfFantasy.FlockForge.Unity.Extensions;
@@ -15,17 +16,17 @@ namespace PalaceOfFantasy.FlockForge.Unity.Components
         private static int _nextId = 0;
 
         public int Id { get; private set; }
-        public string Tag { get => tag; set => tag = value; }
+        public string Tag { get => this != null ? tag : "Destroyed"; set { if (this != null) tag = value; } }
         public bool IsActive
         {
-            get => gameObject.activeInHierarchy;
-            set => gameObject.SetActive(value);
+            get => this != null && gameObject.activeInHierarchy;
+            set { if (this != null) gameObject.SetActive(value); }
         }
 
         public FVector3 Position
         {
-            get => transform.position.ToFVector3();
-            set => transform.position = value.ToUnityVector3();
+            get => this != null ? transform.position.ToFVector3() : FVector3.Zero;
+            set { if (this != null) transform.position = value.ToUnityVector3(); }
         }
 
         public FVector3 Velocity
@@ -34,7 +35,7 @@ namespace PalaceOfFantasy.FlockForge.Unity.Components
             set => _velocity = value;
         }
 
-        public FVector3 Forward => transform.forward.ToFVector3();
+        public FVector3 Forward => this != null ? transform.forward.ToFVector3() : FVector3.Forward;
 
         public IFlock Flock
         {
@@ -44,10 +45,32 @@ namespace PalaceOfFantasy.FlockForge.Unity.Components
 
         public IBoidSettings Settings => _profile;
         public FVector3 AccumulatedForce => _accumulatedForce;
+        
+        public IReadOnlyList<IBehaviour> RuntimeBehaviours => _runtimeBehaviours;
+        private readonly List<IBehaviour> _runtimeBehaviours = new();
+
+        /// <summary>
+        /// Per-boid target provider (e.g., NearestFoodTargetProvider).
+        /// Returns null if no provider is attached to this boid.
+        /// </summary>
+        public ITargetProvider TargetProvider => _targetProvider;
+        private ITargetProvider _targetProvider;
 
         private void Awake()
         {
             Id = _nextId++;
+            _targetProvider = GetComponent<ITargetProvider>();
+        }
+
+        public void AddRuntimeBehaviour(IBehaviour behaviour)
+        {
+            if (!_runtimeBehaviours.Contains(behaviour))
+                _runtimeBehaviours.Add(behaviour);
+        }
+
+        public void RemoveRuntimeBehaviour(IBehaviour behaviour)
+        {
+            _runtimeBehaviours.Remove(behaviour);
         }
 
         public void AddForce(FVector3 force)

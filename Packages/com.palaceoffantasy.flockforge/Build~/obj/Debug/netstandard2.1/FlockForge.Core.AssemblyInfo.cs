@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FlockForge.Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+04eb92ea2bb9a7ca2e67dc6d72d969349100d26b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5708a6c7782fa19276e926ec19d8aedc55d59d5c")]
 [assembly: System.Reflection.AssemblyProductAttribute("FlockForge.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FlockForge.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

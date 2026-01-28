@@ -63,22 +63,44 @@ namespace PalaceOfFantasy.FlockForge.Core
 
             foreach (var boid in _boids)
             {
-                if (!boid.IsActive) continue;
+                if (!boid.IsActive || boid.Settings == null) continue;
 
                 var context = BuildContext(boid, deltaTime);
+                FVector3 totalForce = FVector3.Zero;
+                float remainingAuthority = 1.0f;
 
-                foreach (var behaviour in Settings.DefaultBehaviours)
+                var allBehaviors = Settings.DefaultBehaviours
+                    .Concat(boid.RuntimeBehaviours)
+                    .Where(b => b.IsEnabled)
+                    .OrderByDescending(b => b.Priority)
+                    .ToList();
+
+                foreach (var behaviour in allBehaviors)
                 {
-                    if (!behaviour.IsEnabled) continue;
-                    var force = behaviour.CalculateForce(context);
-                    boid.AddForce(force * behaviour.Weight);
+                    if (remainingAuthority <= 0.01f) break;
+
+                    var force = behaviour.CalculateForce(context) * behaviour.Weight;
+                    float forceMagnitude = force.Magnitude;
+
+                    totalForce += force * remainingAuthority;
+
+                    // If a high-priority behavior is returning a strong force, 
+                    // dampen lower-priority behaviors.
+                    if (behaviour.Priority > 0 && forceMagnitude > 0.1f)
+                    {
+                        // Dampen based on priority and force magnitude relative to max speed/force
+                        float dampening = (behaviour.Priority / 20.0f) * (forceMagnitude / boid.Settings.MaxSpeed);
+                        remainingAuthority = Math.Max(0, remainingAuthority - dampening);
+                    }
                 }
+
+                boid.AddForce(totalForce);
 
                 boid.ApplyForces(deltaTime);
             }
         }
 
-        private IBoidContext BuildContext(IBoid boid, float deltaTime)
+        private IBoidContext BuildContext(IBoid boid, float deltaTime) 
         {
             _contextCache.Self = boid;
             _contextCache.Flock = this;
@@ -86,15 +108,20 @@ namespace PalaceOfFantasy.FlockForge.Core
             _contextCache.TotalTime = _totalTime;
             _contextCache.Neighbors = GetNeighbors(boid);
 
-            if (TargetProvider != null)
+            // Use per-boid target provider if available, otherwise use flock-level provider
+            var provider = boid.TargetProvider ?? TargetProvider;
+            
+            if (provider != null)
             {
-                _contextCache.SeekTarget = TargetProvider.GetSeekTarget(boid);
-                _contextCache.Threats = TargetProvider.GetThreats(boid);
-                _contextCache.NearbyObstacles = TargetProvider.GetNearbyObstacles(boid);
+                _contextCache.SeekTarget = provider.GetSeekTarget(boid);
+                _contextCache.SeekTargetBoid = provider.GetSeekTargetBoid(boid);
+                _contextCache.Threats = provider.GetThreats(boid);
+                _contextCache.NearbyObstacles = provider.GetNearbyObstacles(boid);
             }
             else
             {
                 _contextCache.SeekTarget = null;
+                _contextCache.SeekTargetBoid = null;
             }
 
             return _contextCache;
@@ -102,6 +129,12 @@ namespace PalaceOfFantasy.FlockForge.Core
 
         public IReadOnlyList<IBoid> GetNeighbors(IBoid boid)
         {
+            // Guard against null settings
+            if (boid.Settings == null)
+            {
+                return new List<IBoid>();
+            }
+            
             var radius = boid.Settings.PerceptionRadius;
             var maxNeighbors = boid.Settings.MaxNeighbors;
 

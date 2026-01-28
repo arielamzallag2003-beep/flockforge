@@ -12,15 +12,20 @@ namespace PalaceOfFantasy.FlockForge.Unity.Providers
         [SerializeField] private LayerMask _obstacleMask;
 
 
-        public FVector3? GetSeekTarget(IBoid boid)
+        public virtual FVector3? GetSeekTarget(IBoid boid)
         {
             if (_seekTarget == null) return null;
-            // Temporary Debug
-            // UnityEngine.Debug.DrawLine(boid.Position.ToUnityVector3(), _seekTarget.position, Color.red);
             return _seekTarget.position.ToFVector3();
         }
 
-        public IReadOnlyList<FVector3> GetThreats(IBoid boid)
+        public virtual IBoid GetSeekTargetBoid(IBoid boid)
+        {
+            if (_seekTarget == null) return null;
+            // Try to get BoidAgent from the target or its parent/children
+            return _seekTarget.GetComponentInParent<IBoid>() ?? _seekTarget.GetComponentInChildren<IBoid>();
+        }
+
+        public virtual IReadOnlyList<FVector3> GetThreats(IBoid boid)
         {
             var threatPositions = new List<FVector3>();
             foreach (var threat in _threats)
@@ -31,10 +36,12 @@ namespace PalaceOfFantasy.FlockForge.Unity.Providers
             return threatPositions;
         }
 
-        public IReadOnlyList<IObstacle> GetNearbyObstacles(IBoid boid)
+        public virtual IReadOnlyList<IObstacle> GetNearbyObstacles(IBoid boid)
         {
             // Simple physics overlap implementation
             var obstacles = new List<IObstacle>();
+            if (boid.Settings == null) return obstacles;
+            
             var center = boid.Position.ToUnityVector3();
             var radius = boid.Settings.ObstacleAvoidanceDistance;
 
