@@ -1,8 +1,6 @@
-using UnityEngine;
-using PalaceOfFantasy.FlockForge.Core;
-using PalaceOfFantasy.FlockForge.Unity.Config;
+using System;
 
-namespace PalaceOfFantasy.FlockForge.Samples.Epervier
+namespace PalaceOfFantasy.FlockForge.Core.Behaviors
 {
     public class ArrivalBehaviour : IBehaviour
     {
@@ -18,26 +16,11 @@ namespace PalaceOfFantasy.FlockForge.Samples.Epervier
             var targetOffset = context.SeekTarget.Value - context.Self.Position;
             var distance = targetOffset.Magnitude;
             var rampedSpeed = context.Settings.MaxSpeed * (distance / SlowingRadius);
-            var clippedSpeed = Mathf.Min(rampedSpeed, context.Settings.MaxSpeed);
+            var clippedSpeed = (float)Math.Min(rampedSpeed, context.Settings.MaxSpeed);
             
             var desired = (distance > 0) ? (targetOffset / distance) * clippedSpeed : FVector3.Zero;
             
             return desired - context.Self.Velocity;
         }
-    }
-
-    [CreateAssetMenu(menuName = "FlockForge/Behaviors/Arrival")]
-    public class ArrivalAsset : BehaviourAsset
-    {
-        public float weight = 1f;
-        public float slowingRadius = 5f;
-
-        public override IBehaviour CreateBehaviour()
-            => new ArrivalBehaviour 
-            { 
-                Weight = weight, 
-                IsEnabled = _isEnabled,
-                SlowingRadius = slowingRadius 
-            };
     }
 }

@@ -1,8 +1,4 @@
-using UnityEngine;
-using PalaceOfFantasy.FlockForge.Core;
-using PalaceOfFantasy.FlockForge.Unity.Config;
-
-namespace PalaceOfFantasy.FlockForge.Samples.Epervier
+namespace PalaceOfFantasy.FlockForge.Core.Behaviors
 {
     public class FleeBehaviour : IBehaviour
     {
@@ -26,15 +22,5 @@ namespace PalaceOfFantasy.FlockForge.Samples.Epervier
             }
             return force.Normalized * context.Settings.MaxSpeed;
         }
-    }
-
-    [CreateAssetMenu(menuName = "FlockForge/Behaviors/Flee")]
-    public class FleeAsset : BehaviourAsset
-    {
-        public float weight = 2f;
-        public float panicDistance = 10f;
-
-        public override IBehaviour CreateBehaviour()
-            => new FleeBehaviour { Weight = weight, PanicDistance = panicDistance, IsEnabled = _isEnabled };
     }
 }
