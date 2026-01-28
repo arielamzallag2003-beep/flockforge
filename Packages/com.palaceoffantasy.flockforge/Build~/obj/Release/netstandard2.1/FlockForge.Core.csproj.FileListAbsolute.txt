@@ -1,0 +1,12 @@
+C:\Users\ariel\Documents\GitHub\flockforge\Packages\com.palaceoffantasy.flockforge\Build~\bin\Release\netstandard2.1\FlockForge.Core.deps.json
+C:\Users\ariel\Documents\GitHub\flockforge\Packages\com.palaceoffantasy.flockforge\Build~\bin\Release\netstandard2.1\FlockForge.Core.dll
+C:\Users\ariel\Documents\GitHub\flockforge\Packages\com.palaceoffantasy.flockforge\Build~\bin\Release\netstandard2.1\FlockForge.Core.pdb
+C:\Users\ariel\Documents\GitHub\flockforge\Packages\com.palaceoffantasy.flockforge\Build~\bin\Release\netstandard2.1\FlockForge.Core.xml
+C:\Users\ariel\Documents\GitHub\flockforge\Packages\com.palaceoffantasy.flockforge\Build~\obj\Release\netstandard2.1\FlockForge.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ariel\Documents\GitHub\flockforge\Packages\com.palaceoffantasy.flockforge\Build~\obj\Release\netstandard2.1\FlockForge.Core.AssemblyInfoInputs.cache
+C:\Users\ariel\Documents\GitHub\flockforge\Packages\com.palaceoffantasy.flockforge\Build~\obj\Release\netstandard2.1\FlockForge.Core.AssemblyInfo.cs
+C:\Users\ariel\Documents\GitHub\flockforge\Packages\com.palaceoffantasy.flockforge\Build~\obj\Release\netstandard2.1\FlockForge.Core.csproj.CoreCompileInputs.cache
+C:\Users\ariel\Documents\GitHub\flockforge\Packages\com.palaceoffantasy.flockforge\Build~\obj\Release\netstandard2.1\FlockForge.Core.sourcelink.json
+C:\Users\ariel\Documents\GitHub\flockforge\Packages\com.palaceoffantasy.flockforge\Build~\obj\Release\netstandard2.1\FlockForge.Core.dll
+C:\Users\ariel\Documents\GitHub\flockforge\Packages\com.palaceoffantasy.flockforge\Build~\obj\Release\netstandard2.1\FlockForge.Core.xml
+C:\Users\ariel\Documents\GitHub\flockforge\Packages\com.palaceoffantasy.flockforge\Build~\obj\Release\netstandard2.1\FlockForge.Core.pdb
