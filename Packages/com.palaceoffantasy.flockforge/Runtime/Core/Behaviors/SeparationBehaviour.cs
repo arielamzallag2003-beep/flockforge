@@ -5,6 +5,7 @@ namespace PalaceOfFantasy.FlockForge.Core.Behaviors
         public string Name => "Separation";
         public bool IsEnabled { get; set; } = true;
         public float Weight { get; set; } = 1.5f;
+        public int Priority => 0;
         public float Radius { get; set; } = 2f;
 
         public FVector3 CalculateForce(IBoidContext context)

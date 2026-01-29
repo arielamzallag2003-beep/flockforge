@@ -5,6 +5,7 @@ namespace PalaceOfFantasy.FlockForge.Core.Behaviors
         public string Name => "Cohesion";
         public bool IsEnabled { get; set; } = true;
         public float Weight { get; set; } = 1f;
+        public int Priority => 0;
 
         public FVector3 CalculateForce(IBoidContext context)
         {

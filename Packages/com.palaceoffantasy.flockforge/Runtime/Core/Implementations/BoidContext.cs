@@ -11,6 +11,7 @@ namespace PalaceOfFantasy.FlockForge.Core
         public float DeltaTime { get; set; }
         public float TotalTime { get; set; }
         public FVector3? SeekTarget { get; set; }
+        public IBoid SeekTargetBoid { get; set; }
         public IReadOnlyList<FVector3> Threats { get; set; }
         public bool IsInFormation { get; set; }
         public IBoid Leader { get; set; }
@@ -36,6 +37,7 @@ namespace PalaceOfFantasy.FlockForge.Core
             DeltaTime = 0;
             TotalTime = 0;
             SeekTarget = null;
+            SeekTargetBoid = null;
             Threats = EmptyThreats;
             IsInFormation = false;
             Leader = null;

@@ -7,6 +7,7 @@ namespace PalaceOfFantasy.FlockForge.Core.Behaviors
         public string Name => "StayInRadius";
         public bool IsEnabled { get; set; } = true;
         public float Weight { get; set; } = 1f;
+        public int Priority => 0;
 
         public float Radius { get; set; } = 20f;
 

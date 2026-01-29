@@ -5,6 +5,7 @@ namespace PalaceOfFantasy.FlockForge.Core.Behaviors
         public string Name => "Flee";
         public bool IsEnabled { get; set; } = true;
         public float Weight { get; set; } = 2f;
+        public int Priority => 8;
         public float PanicDistance { get; set; } = 5f;
 
         public FVector3 CalculateForce(IBoidContext context)
